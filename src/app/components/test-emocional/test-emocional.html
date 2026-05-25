@@ -1,0 +1,76 @@
+<section class="test" id="test-emocional">
+  <h3>¿COMO TE SIENTES HOY?</h3>
+  <p>Tu estado emocional es importante. Realiza tu check-in diario y comienza tu día con consciencia.</p>
+
+  <div class="botones-animo">
+    <button id="btnBien" (click)="mostrarConsejo('bien')">Me siento bien 😊</button>
+    <button id="btnRegular" (click)="mostrarConsejo('regular')">Me siento Regular 🙁</button>
+    <button id="btnMal" (click)="mostrarConsejo('mal')">Me siento mal 😭</button>
+  </div>
+
+  <div id="resultado" *ngIf="consejo">
+    <h4>Consejo:</h4>
+    <p>{{ consejo }}</p>
+  </div>
+
+  <p>¡Gracias por compartir cómo te sientes!</p>
+
+  <div class="emocion">
+    <button>
+      <a href="#me siento bien"><img src="assets/img/Me siento bien.jpeg" style="width: 300px"></a>
+    </button>
+    <button>
+      <a href="#me siento regular"><img src="assets/img/me siento regular.jpeg" style="width: 300px"></a>
+    </button>
+    <button>
+      <a href="#me siento mal"><img src="assets/img/me siento mal.jpeg" style="width: 300px"></a>
+    </button>
+  </div>
+
+  <section class="nota-importante" aria-labelledby="nota-titulo">
+    <h3 id="nota-titulo">⚠️ Nota importante</h3>
+    <p>
+      Si te sientes mal con frecuencia, si la ansiedad o la tristeza te impiden realizar tus actividades,
+      o si tienes pensamientos de hacerte daño, busca ayuda profesional. Hablar con un psicólogo o un médico
+      puede ayudarte a sentirte mejor.
+    </p>
+    <p class="nota-extra">
+      En caso de emergencia, contacta a un familiar de confianza o a los servicios de emergencia de tu ciudad.
+    </p>
+  </section>
+
+  <div class="emociones">
+    <section id="me siento bien">
+      <div class="parrafos">
+        <h3>Me siento bien</h3>
+        <p>"Qué bueno verte así, sigue cuidando tu cuerpo y tu mente."
+          "Cuando te sientes bien, estás construyendo tu equilibrio."
+          "Disfruta este momento y continúa con los hábitos que te hacen sentir así."
+          "Tu bienestar es el resultado de pequeñas acciones constantes."
+          "Estar bien también es un logro, celébralo."</p>
+      </div>
+    </section>
+
+    <section id="me siento regular">
+      <div class="parrafos">
+        <h3>Me siento regular</h3>
+        <p>"Está bien no estar al cien, hoy también cuenta."
+          "Un pequeño paso hoy puede hacer la diferencia."
+          "Escúchate, tu cuerpo y tu mente te están hablando."
+          "No tienes que hacerlo todo perfecto, solo empezar."
+          "Respira, date un momento y sigue avanzando."</p>
+      </div>
+    </section>
+
+    <section id="me siento mal">
+      <div class="parrafos">
+        <h3>Me siento mal</h3>
+        <p>"No estás sola, pedirte una pausa también es cuidarte."
+          "Hoy puede ser difícil, pero no define quién eres."
+          "Paso a paso, incluso descansar es avanzar."
+          "Está bien parar, tu bienestar es importante."
+          "Respira profundo, este momento también pasará."</p>
+      </div>
+    </section>
+  </div>
+</section>
