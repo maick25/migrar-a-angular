@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-alimentacion',
+  standalone: true,
   imports: [],
   templateUrl: './alimentacion.html',
-  styleUrl: './alimentacion.css',
+  styleUrl: './alimentacion.css'
 })
-export class Alimentacion {
-
-}
+export class Alimentacion { }

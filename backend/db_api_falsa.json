@@ -1,0 +1,56 @@
+{
+  "usuarios": [
+    {
+      "id": "1",
+      "nombre": "Admin",
+      "correo": "admin@cuerpoyalma.com",
+      "password": "12345",
+      "rol": "admin"
+    },
+    {
+      "id": "2",
+      "nombre": "usuario1",
+      "correo": "usuario1@cuerpoyalma.com",
+      "password": "12345",
+      "rol": "usuario"
+    },
+    {
+      "nombre": "miguel angel navarro",
+      "correo": "prueba@cuerpoyalma.com",
+      "password": "123456",
+      "rol": "usuario",
+      "id": "LZjO8kJkMyM"
+    }
+  ],
+  "consejos": [
+    {
+      "id": "1",
+      "titulo": "Respiración profunda",
+      "descripcion": "Inhala por 4 segundos, sostén 4 segundos, exhala 4 segundos. Repite 5 veces.",
+      "categoria": "bienestar",
+      "autor": "Admin"
+    },
+    {
+      "id": "2",
+      "titulo": "Hidratación diaria",
+      "descripcion": "Toma mínimo 8 vasos de agua al día para mantener tu cuerpo en equilibrio.",
+      "categoria": "salud",
+      "autor": "Admin"
+    },
+    {
+      "id": "3",
+      "titulo": "Caminata de 30 minutos",
+      "descripcion": "Una caminata diaria mejora tu estado de ánimo y tu salud cardiovascular.",
+      "categoria": "actividad",
+      "autor": "Admin"
+    },
+    {
+      "titulo": "esto es una prueba",
+      "descripcion": "esto es una nueva prueba",
+      "categoria": "bienestar",
+      "autor": "Admin",
+      "id": "6-4IBCiZ_JY"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

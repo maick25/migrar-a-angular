@@ -1,0 +1,33 @@
+<div class="registro-container">
+  <div class="registro-card">
+    <div class="registro-logo">
+      <img src="assets/img/flor.jpeg" alt="Logo" style="width:85px; border-radius:50%; border:3px solid #B8EABC;">
+      <h2>Cuerpo y Alma</h2>
+    </div>
+    <h3>Crear cuenta</h3>
+    <div class="error-msg" *ngIf="error">⚠️ {{ error }}</div>
+    <div class="form-group">
+      <label>Nombre completo</label>
+      <input type="text" [(ngModel)]="nombre" placeholder="Tu nombre completo">
+    </div>
+    <div class="form-group">
+      <label>Correo electrónico</label>
+      <input type="email" [(ngModel)]="correo" placeholder="correo@ejemplo.com">
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" [(ngModel)]="password" placeholder="Mínimo 4 caracteres">
+    </div>
+    <div class="form-group">
+      <label>Confirmar contraseña</label>
+      <input type="password" [(ngModel)]="confirmar" placeholder="Repite tu contraseña" (keyup.enter)="registrarse()">
+    </div>
+    <button class="btn-registro" (click)="registrarse()" [disabled]="cargando">
+      {{ cargando ? 'Registrando...' : 'Crear cuenta' }}
+    </button>
+    <div class="links">
+      <p>¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
+      <p><a routerLink="/">← Volver al inicio</a></p>
+    </div>
+  </div>
+</div>

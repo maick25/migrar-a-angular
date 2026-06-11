@@ -1,6 +1,6 @@
 <header class="header">
   <div class="logo">
-    <img src="assets/img/flor.jpeg" style="width: 150px">
+    <img src="assets/img/flor.jpeg" style="width: 150px" alt="Logo">
     <h1>Cuerpo y alma</h1>
   </div>
   <section>
@@ -13,4 +13,19 @@
       </ul>
     </nav>
   </section>
+
+  <!-- Botones de sesión -->
+  <div class="auth-botones">
+    <!-- Si NO está logueado -->
+    <ng-container *ngIf="!usuarioActual">
+      <a routerLink="/login" class="btn-login-header">Iniciar sesión</a>
+      <a routerLink="/registro" class="btn-registro-header">Registrarse</a>
+    </ng-container>
+
+    <!-- Si SÍ está logueado -->
+    <ng-container *ngIf="usuarioActual">
+      <a routerLink="/dashboard" class="btn-dashboard-header">⚙️ {{ usuarioActual.nombre }}</a>
+      <button class="btn-salir-header" (click)="cerrarSesion()">🚪 Salir</button>
+    </ng-container>
+  </div>
 </header>

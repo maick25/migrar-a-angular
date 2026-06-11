@@ -1,0 +1,12 @@
+{
+  "name": "backend-json-server",
+  "version": "1.0.0",
+  "description": "API Falsa con JSON Server - Cuerpo y Alma",
+  "main": "server.js",
+  "scripts": {
+    "start": "npx json-server --watch db_api_falsa.json --port 3000"
+  },
+  "dependencies": {
+    "json-server": "^0.17.4"
+  }
+}

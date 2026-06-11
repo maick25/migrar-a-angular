@@ -3,11 +3,12 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-pqr',
+  standalone: true,
   imports: [FormsModule],
   templateUrl: './pqr.html',
   styleUrl: './pqr.css'
 })
-export class PqrComponent {
+export class Pqr {
   nombre = '';
   correo = '';
   tipo = '';

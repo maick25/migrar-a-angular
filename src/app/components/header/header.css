@@ -1,0 +1,76 @@
+.auth-botones {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 70px;
+  flex-wrap: wrap;
+}
+
+.btn-login-header {
+  padding: 9px 18px;
+  background: #B0DBEB;
+  color: #1a6b8a;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.btn-login-header:hover {
+  background: #8ecde0;
+  transform: translateY(-1px);
+}
+
+.btn-registro-header {
+  padding: 9px 18px;
+  background: #B8EABC;
+  color: #1a7a3a;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.btn-registro-header:hover {
+  background: #9fd9a5;
+  transform: translateY(-1px);
+}
+
+.btn-dashboard-header {
+  padding: 9px 18px;
+  background: #B8EABC;
+  color: #1a7a3a;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.btn-dashboard-header:hover {
+  background: #9fd9a5;
+  transform: translateY(-1px);
+}
+
+.btn-salir-header {
+  padding: 9px 18px;
+  background: rgba(255, 100, 100, 0.15);
+  color: #c0392b;
+  border: none;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.btn-salir-header:hover {
+  background: rgba(255, 100, 100, 0.3);
+  transform: translateY(-1px);
+}

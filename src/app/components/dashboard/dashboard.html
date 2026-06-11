@@ -1,0 +1,360 @@
+<div class="dashboard">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="assets/img/flor.jpeg" alt="Logo" style="width:55px; border-radius:50%;">
+      <h3>Cuerpo y Alma</h3>
+    </div>
+
+    <!-- ADMIN NAV -->
+    <nav *ngIf="esAdmin">
+      <button [class.activo]="seccionActiva==='stats'" (click)="seccionActiva='stats'">📊 Estadísticas</button>
+      <button [class.activo]="seccionActiva==='usuarios'" (click)="seccionActiva='usuarios'">👥 Usuarios</button>
+      <button [class.activo]="seccionActiva==='consejos'" (click)="seccionActiva='consejos'">💡 Consejos</button>
+      <button [class.activo]="seccionActiva==='citas-admin'" (click)="seccionActiva='citas-admin'">📅 Citas</button>
+      <button routerLink="/">🏠 Inicio</button>
+      <button class="btn-salir" (click)="cerrarSesion()">🚪 Salir</button>
+    </nav>
+
+    <!-- USUARIO NAV -->
+    <nav *ngIf="!esAdmin">
+      <button [class.activo]="seccionActiva==='citas'" (click)="seccionActiva='citas'">📅 Mis citas</button>
+      <button [class.activo]="seccionActiva==='habitos'" (click)="seccionActiva='habitos'">✅ Mis hábitos</button>
+      <button [class.activo]="seccionActiva==='test'" (click)="seccionActiva='test'">🧠 Test bienestar</button>
+      <button [class.activo]="seccionActiva==='perfil'" (click)="seccionActiva='perfil'">👤 Mi perfil</button>
+      <button routerLink="/">🏠 Inicio</button>
+      <button class="btn-salir" (click)="cerrarSesion()">🚪 Salir</button>
+    </nav>
+
+    <div class="usuario-info" *ngIf="usuarioActual">
+      <p>{{ usuarioActual.nombre }}</p>
+      <span [class]="usuarioActual.rol">{{ usuarioActual.rol }}</span>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO -->
+  <main class="contenido">
+    <div class="mensaje-feedback" *ngIf="mensaje" [class.error]="tipoMensaje==='error'">{{ mensaje }}</div>
+
+    <!-- ══ ADMIN: ESTADÍSTICAS ══ -->
+    <section *ngIf="esAdmin && seccionActiva==='stats'">
+      <h2>📊 Panel de Estadísticas</h2>
+      <div class="stats-grid">
+        <div class="stat-card azul">
+          <div class="stat-icono">👥</div>
+          <div class="stat-num">{{ stats.totalUsuarios }}</div>
+          <div class="stat-label">Usuarios registrados</div>
+        </div>
+        <div class="stat-card verde">
+          <div class="stat-icono">💡</div>
+          <div class="stat-num">{{ stats.totalConsejos }}</div>
+          <div class="stat-label">Consejos publicados</div>
+        </div>
+        <div class="stat-card amarillo">
+          <div class="stat-icono">📅</div>
+          <div class="stat-num">{{ stats.totalCitas }}</div>
+          <div class="stat-label">Citas totales</div>
+        </div>
+        <div class="stat-card rojo">
+          <div class="stat-icono">⏳</div>
+          <div class="stat-num">{{ stats.citasPendientes }}</div>
+          <div class="stat-label">Citas pendientes</div>
+        </div>
+      </div>
+      <div class="acciones-rapidas">
+        <h3>Acciones rápidas</h3>
+        <div class="acciones-grid">
+          <button (click)="seccionActiva='usuarios'">👥 Gestionar usuarios</button>
+          <button (click)="seccionActiva='consejos'">💡 Gestionar consejos</button>
+          <button (click)="seccionActiva='citas-admin'">📅 Ver citas</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ ADMIN: USUARIOS ══ -->
+    <section *ngIf="esAdmin && seccionActiva==='usuarios'">
+      <div class="seccion-header">
+        <h2>👥 Gestión de Usuarios</h2>
+        <span class="contador">{{ usuarios.length }} registros</span>
+      </div>
+      <div class="card-form">
+        <h3>{{ editandoUsuario ? '✏️ Editar Usuario' : '➕ Nuevo Usuario' }}</h3>
+        <div class="form-grid">
+          <div class="form-field"><label>Nombre</label><input [(ngModel)]="usuarioForm.nombre" placeholder="Nombre completo"></div>
+          <div class="form-field"><label>Correo</label><input [(ngModel)]="usuarioForm.correo" type="email" placeholder="correo@ejemplo.com"></div>
+          <div class="form-field"><label>Contraseña</label><input [(ngModel)]="usuarioForm.password" type="password" placeholder="••••••••"></div>
+          <div class="form-field"><label>Rol</label>
+            <select [(ngModel)]="usuarioForm.rol">
+              <option value="usuario">Usuario</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-botones">
+          <button class="btn-guardar" (click)="guardarUsuario()">{{ editandoUsuario ? '💾 Actualizar' : '➕ Crear' }}</button>
+          <button class="btn-cancelar" *ngIf="editandoUsuario" (click)="cancelarUsuario()">✕ Cancelar</button>
+        </div>
+      </div>
+      <div class="tabla-container">
+        <table>
+          <thead><tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Rol</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let u of usuarios">
+              <td class="id-cell">{{ u.id }}</td>
+              <td><strong>{{ u.nombre }}</strong></td>
+              <td>{{ u.correo }}</td>
+              <td><span class="badge" [class]="u.rol">{{ u.rol }}</span></td>
+              <td class="acciones">
+                <button class="btn-editar" (click)="editarUsuario(u)">✏️</button>
+                <button class="btn-eliminar" (click)="eliminarUsuario(u.id!)">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ ADMIN: CONSEJOS ══ -->
+    <section *ngIf="esAdmin && seccionActiva==='consejos'">
+      <div class="seccion-header">
+        <h2>💡 Gestión de Consejos</h2>
+        <span class="contador">{{ consejos.length }} registros</span>
+      </div>
+      <div class="card-form">
+        <h3>{{ editandoConsejo ? '✏️ Editar Consejo' : '➕ Nuevo Consejo' }}</h3>
+        <div class="form-grid">
+          <div class="form-field"><label>Título</label><input [(ngModel)]="consejoForm.titulo" placeholder="Ej: Respiración profunda"></div>
+          <div class="form-field"><label>Categoría</label>
+            <select [(ngModel)]="consejoForm.categoria">
+              <option value="bienestar">🌿 Bienestar</option>
+              <option value="salud">❤️ Salud</option>
+              <option value="actividad">🏃 Actividad física</option>
+              <option value="nutricion">🥗 Nutrición</option>
+            </select>
+          </div>
+          <div class="form-field full-width"><label>Descripción</label>
+            <textarea [(ngModel)]="consejoForm.descripcion" placeholder="Describe el consejo..." rows="3"></textarea>
+          </div>
+        </div>
+        <div class="form-botones">
+          <button class="btn-guardar" (click)="guardarConsejo()">{{ editandoConsejo ? '💾 Actualizar' : '➕ Crear' }}</button>
+          <button class="btn-cancelar" *ngIf="editandoConsejo" (click)="cancelarConsejo()">✕ Cancelar</button>
+        </div>
+      </div>
+      <div class="tabla-container">
+        <table>
+          <thead><tr><th>ID</th><th>Título</th><th>Categoría</th><th>Descripción</th><th>Autor</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let c of consejos">
+              <td class="id-cell">{{ c.id }}</td>
+              <td><strong>{{ c.titulo }}</strong></td>
+              <td><span class="badge" [class]="c.categoria">{{ c.categoria }}</span></td>
+              <td class="descripcion-cell">{{ c.descripcion }}</td>
+              <td>{{ c.autor }}</td>
+              <td class="acciones">
+                <button class="btn-editar" (click)="editarConsejo(c)">✏️</button>
+                <button class="btn-eliminar" (click)="eliminarConsejo(c.id!)">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ ADMIN: CITAS ══ -->
+    <section *ngIf="esAdmin && seccionActiva==='citas-admin'">
+      <div class="seccion-header">
+        <h2>📅 Citas Agendadas</h2>
+        <span class="contador">{{ todasCitas.length }} citas</span>
+      </div>
+      <div class="tabla-container">
+        <table>
+          <thead><tr><th>Paciente</th><th>Correo</th><th>Tipo</th><th>Fecha</th><th>Hora</th><th>Motivo</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let c of todasCitas">
+              <td><strong>{{ c.nombre }}</strong></td>
+              <td>{{ c.correo }}</td>
+              <td><span class="badge bienestar">{{ c.tipo }}</span></td>
+              <td>{{ c.fecha }}</td>
+              <td>{{ c.hora }}</td>
+              <td class="descripcion-cell">{{ c.motivo }}</td>
+              <td>
+                <select class="select-estado" [(ngModel)]="c.estado" (change)="cambiarEstadoCita(c, c.estado)">
+                  <option value="pendiente">⏳ Pendiente</option>
+                  <option value="confirmada">✅ Confirmada</option>
+                  <option value="cancelada">❌ Cancelada</option>
+                </select>
+              </td>
+              <td><button class="btn-eliminar" (click)="eliminarCita(c.id!)">🗑️</button></td>
+            </tr>
+            <tr *ngIf="todasCitas.length===0"><td colspan="8" class="sin-datos">No hay citas agendadas</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ USUARIO: CITAS ══ -->
+    <section *ngIf="!esAdmin && seccionActiva==='citas'">
+      <h2>📅 Mis Citas</h2>
+
+      <!-- Confirmación -->
+      <div class="cita-confirmada" *ngIf="citaEnviada">
+        <div class="check-icon">✅</div>
+        <h3>¡Cita agendada!</h3>
+        <p>Te contactaremos al correo <strong>{{ citaForm.correo }}</strong></p>
+        <div class="resumen-cita">
+          <p>📋 <strong>Tipo:</strong> {{ citaForm.tipo }}</p>
+          <p>📅 <strong>Fecha:</strong> {{ citaForm.fecha }}</p>
+          <p>🕐 <strong>Hora:</strong> {{ citaForm.hora }}</p>
+        </div>
+        <button class="btn-guardar" (click)="nuevaCita()">➕ Nueva cita</button>
+      </div>
+
+      <!-- Formulario -->
+      <div class="card-form" *ngIf="!citaEnviada">
+        <h3>📋 Agendar nueva cita</h3>
+        <div class="form-grid">
+          <div class="form-field"><label>Nombre</label><input [(ngModel)]="citaForm.nombre" readonly></div>
+          <div class="form-field"><label>Correo</label><input [(ngModel)]="citaForm.correo" readonly></div>
+          <div class="form-field"><label>Tipo de atención</label>
+            <select [(ngModel)]="citaForm.tipo">
+              <option value="psicologia">🧠 Psicología</option>
+              <option value="nutricion">🥗 Nutrición</option>
+              <option value="actividad">🏃 Actividad física</option>
+              <option value="bienestar">🌿 Bienestar general</option>
+            </select>
+          </div>
+          <div class="form-field"><label>Fecha</label><input [(ngModel)]="citaForm.fecha" type="date"></div>
+          <div class="form-field"><label>Hora</label><input [(ngModel)]="citaForm.hora" type="time"></div>
+          <div class="form-field full-width"><label>Motivo</label>
+            <textarea [(ngModel)]="citaForm.motivo" placeholder="Cuéntanos el motivo de tu consulta..." rows="3"></textarea>
+          </div>
+        </div>
+        <button class="btn-guardar" (click)="agendarCita()">📅 Agendar cita</button>
+      </div>
+
+      <!-- Historial -->
+      <div class="tabla-container" *ngIf="misCitas.length > 0">
+        <h3 style="padding: 0 0 12px;">Mis citas anteriores</h3>
+        <table>
+          <thead><tr><th>Tipo</th><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let c of misCitas">
+              <td>{{ c.tipo }}</td>
+              <td>{{ c.fecha }}</td>
+              <td>{{ c.hora }}</td>
+              <td><span class="badge" [class]="c.estado">{{ c.estado }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══ USUARIO: HÁBITOS ══ -->
+    <section *ngIf="!esAdmin && seccionActiva==='habitos'">
+      <h2>✅ Mis Hábitos de Hoy</h2>
+      <p class="subtitulo">{{ hoy }}</p>
+
+      <div class="habitos-grid">
+        <div class="habito-card" [class.activo]="habitoHoy.agua" (click)="habitoHoy.agua = !habitoHoy.agua">
+          <div class="habito-icono">💧</div>
+          <p>Tomé agua</p>
+          <span>{{ habitoHoy.agua ? '✅' : '⬜' }}</span>
+        </div>
+        <div class="habito-card" [class.activo]="habitoHoy.ejercicio" (click)="habitoHoy.ejercicio = !habitoHoy.ejercicio">
+          <div class="habito-icono">🏃</div>
+          <p>Hice ejercicio</p>
+          <span>{{ habitoHoy.ejercicio ? '✅' : '⬜' }}</span>
+        </div>
+        <div class="habito-card" [class.activo]="habitoHoy.sueno" (click)="habitoHoy.sueno = !habitoHoy.sueno">
+          <div class="habito-icono">😴</div>
+          <p>Dormí bien</p>
+          <span>{{ habitoHoy.sueno ? '✅' : '⬜' }}</span>
+        </div>
+        <div class="habito-card" [class.activo]="habitoHoy.meditacion" (click)="habitoHoy.meditacion = !habitoHoy.meditacion">
+          <div class="habito-icono">🧘</div>
+          <p>Medité</p>
+          <span>{{ habitoHoy.meditacion ? '✅' : '⬜' }}</span>
+        </div>
+        <div class="habito-card" [class.activo]="habitoHoy.alimentacion" (click)="habitoHoy.alimentacion = !habitoHoy.alimentacion">
+          <div class="habito-icono">🥗</div>
+          <p>Comí saludable</p>
+          <span>{{ habitoHoy.alimentacion ? '✅' : '⬜' }}</span>
+        </div>
+      </div>
+
+      <div class="puntaje-habitos">
+        <div class="puntaje-barra">
+          <div class="puntaje-fill" [style.width]="(puntajeHabitos/5*100)+'%'"></div>
+        </div>
+        <p>{{ puntajeHabitos }}/5 hábitos completados hoy</p>
+      </div>
+
+      <button class="btn-guardar" (click)="guardarHabitos()">💾 Guardar hábitos</button>
+    </section>
+
+    <!-- ══ USUARIO: TEST BIENESTAR ══ -->
+    <section *ngIf="!esAdmin && seccionActiva==='test'">
+      <h2>🧠 Test de Bienestar</h2>
+
+      <!-- Inicio -->
+      <div class="test-inicio" *ngIf="!testActivo && !resultadoTest">
+        <div class="test-icono">🌿</div>
+        <h3>¿Cómo estás hoy?</h3>
+        <p>Responde 5 preguntas rápidas y obtén un diagnóstico de tu bienestar actual.</p>
+        <button class="btn-guardar" (click)="iniciarTest()">▶️ Iniciar test</button>
+      </div>
+
+      <!-- Preguntas -->
+      <div class="test-pregunta" *ngIf="testActivo">
+        <div class="progreso-test">
+          <div class="progreso-fill" [style.width]="((preguntaActual+1)/preguntas.length*100)+'%'"></div>
+        </div>
+        <p class="pregunta-num">Pregunta {{ preguntaActual + 1 }} de {{ preguntas.length }}</p>
+        <h3>{{ preguntas[preguntaActual].texto }}</h3>
+        <div class="opciones-test">
+          <button *ngFor="let op of preguntas[preguntaActual].opciones; let i = index"
+            class="opcion-btn" (click)="responder(i+1)">
+            {{ op }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Resultado -->
+      <div class="test-resultado" *ngIf="resultadoTest">
+        <div class="resultado-icono">{{ resultadoTest.split(' ')[0] }}</div>
+        <h3>Tu bienestar: {{ resultadoTest }}</h3>
+        <div class="recomendaciones">
+          <p *ngIf="resultadoTest.includes('Excelente')">¡Sigue así! Mantén tus hábitos saludables y comparte tu energía positiva.</p>
+          <p *ngIf="resultadoTest.includes('Bueno')">Vas bien, pequeñas mejoras en tu rutina pueden llevarte al siguiente nivel.</p>
+          <p *ngIf="resultadoTest.includes('Regular')">Considera agendar una cita con uno de nuestros especialistas.</p>
+          <p *ngIf="resultadoTest.includes('Necesitas')">Te recomendamos buscar apoyo profesional. Agenda una cita hoy.</p>
+        </div>
+        <div class="resultado-botones">
+          <button class="btn-guardar" (click)="reiniciarTest()">🔄 Repetir test</button>
+          <button class="btn-cancelar" *ngIf="!resultadoTest.includes('Excelente')" (click)="seccionActiva='citas'">📅 Agendar cita</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ USUARIO: PERFIL ══ -->
+    <section *ngIf="!esAdmin && seccionActiva==='perfil'">
+      <h2>👤 Mi Perfil</h2>
+      <div class="card-perfil">
+        <div class="perfil-avatar">
+          <div class="avatar-circulo">{{ usuarioActual?.nombre?.charAt(0) | uppercase }}</div>
+          <h3>{{ usuarioActual?.nombre }}</h3>
+          <span class="badge usuario">{{ usuarioActual?.rol }}</span>
+        </div>
+        <div class="perfil-datos">
+          <div class="dato-item"><span class="dato-label">📧 Correo</span><span class="dato-valor">{{ usuarioActual?.correo }}</span></div>
+          <div class="dato-item"><span class="dato-label">🔑 Rol</span><span class="dato-valor">{{ usuarioActual?.rol }}</span></div>
+          <div class="dato-item"><span class="dato-label">🆔 ID</span><span class="dato-valor">{{ usuarioActual?.id }}</span></div>
+          <div class="dato-item"><span class="dato-label">✅ Hábitos hoy</span><span class="dato-valor">{{ puntajeHabitos }}/5 completados</span></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>

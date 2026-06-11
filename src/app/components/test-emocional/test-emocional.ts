@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-test-emocional',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './test-emocional.html',
   styleUrl: './test-emocional.css'
 })
-export class TestEmocionalComponent {
+export class TestEmocional {
   consejo: string = '';
 
   consejosBien = [
@@ -39,7 +40,6 @@ export class TestEmocionalComponent {
     if (estado === 'bien') lista = this.consejosBien;
     else if (estado === 'regular') lista = this.consejosRegular;
     else lista = this.consejosMal;
-
     const numero = Math.floor(Math.random() * lista.length);
     this.consejo = lista[numero];
   }
