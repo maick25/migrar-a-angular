@@ -162,3 +162,12 @@ tr:hover td { background: #f8fdff; }
   .contenido { margin-left: 56px; padding: 16px; }
   .form-grid, .stats-grid, .habitos-grid { grid-template-columns: 1fr; }
 }
+
+/* PQR extra stat colors */
+.stat-card.morado { background: linear-gradient(135deg, #e8c8f0, #c89adc); }
+.stat-card.naranja { background: linear-gradient(135deg, #ffd9a0, #ffb347); }
+
+/* PQR confirmacion */
+.pqr-confirmacion { text-align: center; padding: 30px; background: #f0fff4; border-radius: 16px; margin-bottom: 20px; }
+.pqr-confirmacion .check { font-size: 3rem; margin-bottom: 12px; }
+.btn-nueva { padding: 10px 22px; background: #B8EABC; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; margin-top: 16px; }

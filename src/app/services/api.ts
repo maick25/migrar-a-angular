@@ -40,9 +40,19 @@ export interface Habito {
   alimentacion: boolean;
 }
 
+export interface Pqr {
+  id?: string;
+  nombre: string;
+  correo: string;
+  tipo: string;
+  mensaje: string;
+  fecha: string;
+  estado: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class Api {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = 'http://127.0.0.1:3000';
   constructor(private http: HttpClient) {}
 
   // USUARIOS
@@ -71,4 +81,10 @@ export class Api {
   getHabitosPorUsuario(usuarioId: string): Observable<Habito[]> { return this.http.get<Habito[]>(`${this.baseUrl}/habitos?usuarioId=${usuarioId}`); }
   crearHabito(h: Habito): Observable<Habito> { return this.http.post<Habito>(`${this.baseUrl}/habitos`, h); }
   actualizarHabito(id: string, h: Habito): Observable<Habito> { return this.http.put<Habito>(`${this.baseUrl}/habitos/${id}`, h); }
+
+  // PQRS
+  getPqrs(): Observable<Pqr[]> { return this.http.get<Pqr[]>(`${this.baseUrl}/pqrs`); }
+  crearPqr(p: Pqr): Observable<Pqr> { return this.http.post<Pqr>(`${this.baseUrl}/pqrs`, p); }
+  actualizarPqr(id: string, p: Pqr): Observable<Pqr> { return this.http.put<Pqr>(`${this.baseUrl}/pqrs/${id}`, p); }
+  eliminarPqr(id: string): Observable<void> { return this.http.delete<void>(`${this.baseUrl}/pqrs/${id}`); }
 }

@@ -13,6 +13,7 @@
       <button [class.activo]="seccionActiva==='usuarios'" (click)="seccionActiva='usuarios'">👥 Usuarios</button>
       <button [class.activo]="seccionActiva==='consejos'" (click)="seccionActiva='consejos'">💡 Consejos</button>
       <button [class.activo]="seccionActiva==='citas-admin'" (click)="seccionActiva='citas-admin'">📅 Citas</button>
+      <button [class.activo]="seccionActiva==='pqrs'" (click)="seccionActiva='pqrs'">📋 PQRs</button>
       <button routerLink="/">🏠 Inicio</button>
       <button class="btn-salir" (click)="cerrarSesion()">🚪 Salir</button>
     </nav>
@@ -56,6 +57,16 @@
           <div class="stat-num">{{ stats.totalCitas }}</div>
           <div class="stat-label">Citas totales</div>
         </div>
+        <div class="stat-card morado">
+          <div class="stat-icono">📋</div>
+          <div class="stat-num">{{ stats.totalPqrs }}</div>
+          <div class="stat-label">PQRs recibidas</div>
+        </div>
+        <div class="stat-card naranja">
+          <div class="stat-icono">⚠️</div>
+          <div class="stat-num">{{ stats.pqrsPendientes }}</div>
+          <div class="stat-label">PQRs pendientes</div>
+        </div>
         <div class="stat-card rojo">
           <div class="stat-icono">⏳</div>
           <div class="stat-num">{{ stats.citasPendientes }}</div>
@@ -68,6 +79,7 @@
           <button (click)="seccionActiva='usuarios'">👥 Gestionar usuarios</button>
           <button (click)="seccionActiva='consejos'">💡 Gestionar consejos</button>
           <button (click)="seccionActiva='citas-admin'">📅 Ver citas</button>
+          <button (click)="seccionActiva='pqrs'">📋 Ver PQRs</button>
         </div>
       </div>
     </section>
@@ -356,5 +368,36 @@
       </div>
     </section>
 
-  </main>
+      <!-- ══ ADMIN: PQRs ══ -->
+    <section *ngIf="esAdmin && seccionActiva==='pqrs'">
+      <div class="seccion-header">
+        <h2>📋 Peticiones, Quejas y Reclamos</h2>
+        <span class="contador">{{ todasPqrs.length }} registros</span>
+      </div>
+      <div class="tabla-container">
+        <table>
+          <thead><tr><th>Nombre</th><th>Correo</th><th>Tipo</th><th>Mensaje</th><th>Fecha</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let p of todasPqrs">
+              <td><strong>{{ p.nombre }}</strong></td>
+              <td>{{ p.correo }}</td>
+              <td><span class="badge" [class]="p.tipo">{{ p.tipo }}</span></td>
+              <td class="descripcion-cell">{{ p.mensaje }}</td>
+              <td>{{ p.fecha }}</td>
+              <td>
+                <select class="select-estado" [(ngModel)]="p.estado" (change)="cambiarEstadoPqr(p, p.estado)">
+                  <option value="pendiente">⏳ Pendiente</option>
+                  <option value="en_revision">🔍 En revisión</option>
+                  <option value="resuelto">✅ Resuelto</option>
+                </select>
+              </td>
+              <td><button class="btn-eliminar" (click)="eliminarPqr(p.id!)">🗑️</button></td>
+            </tr>
+            <tr *ngIf="todasPqrs.length===0"><td colspan="7" class="sin-datos">No hay PQRs registradas</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+</main>
 </div>

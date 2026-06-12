@@ -5,7 +5,7 @@ import { Usuario } from './api';
 
 @Injectable({ providedIn: 'root' })
 export class Auth {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = 'http://127.0.0.1:3000';
 
   constructor(private http: HttpClient) {}
 

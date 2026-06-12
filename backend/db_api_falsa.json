@@ -43,13 +43,39 @@
       "descripcion": "Una caminata diaria mejora tu estado de ánimo y tu salud cardiovascular.",
       "categoria": "actividad",
       "autor": "Admin"
+    }
+  ],
+  "citas": [
+    {
+      "id": "1",
+      "nombre": "usuario1",
+      "correo": "usuario1@cuerpoyalma.com",
+      "fecha": "2026-06-15",
+      "hora": "10:00",
+      "tipo": "psicologia",
+      "motivo": "Manejo del estrés",
+      "estado": "pendiente"
+    }
+  ],
+  "habitos": [],
+  "pqrs": [
+    {
+      "id": "1",
+      "nombre": "usuario1",
+      "correo": "usuario1@cuerpoyalma.com",
+      "tipo": "peticion",
+      "mensaje": "Me gustaría tener más consejos de nutrición.",
+      "fecha": "2026-06-11",
+      "estado": "pendiente"
     },
     {
-      "titulo": "esto es una prueba",
-      "descripcion": "esto es una nueva prueba",
-      "categoria": "bienestar",
-      "autor": "Admin",
-      "id": "6-4IBCiZ_JY"
+      "nombre": "prueba",
+      "correo": "pruebita2@gmail.com",
+      "tipo": "peticion",
+      "mensaje": "prueba",
+      "fecha": "2026-06-11",
+      "estado": "pendiente",
+      "id": "60fMrZV9YI8"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

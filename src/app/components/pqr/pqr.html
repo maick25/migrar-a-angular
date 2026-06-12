@@ -1,8 +1,16 @@
 <section class="pqr" id="pqr">
   <h2>Cuestionario de satisfacción</h2>
-  <p>Cuentame si tienes una peticion, queja o reclamo. Tu opinión es importante para nosotros.</p>
+  <p>Cuéntame si tienes una petición, queja o reclamo. Tu opinión es importante para nosotros.</p>
 
-  <form class="formulario-pqr" (submit)="enviarFormulario($event)">
+  <!-- Confirmación -->
+  <div class="pqr-confirmacion" *ngIf="exito">
+    <div class="check">✅</div>
+    <p>{{ respuesta }}</p>
+    <button class="btn-nueva" (click)="nuevaConsulta()">Enviar otra consulta</button>
+  </div>
+
+  <!-- Formulario -->
+  <form class="formulario-pqr" (submit)="enviarFormulario($event)" *ngIf="!exito">
     <label for="nombre">Nombre completo</label>
     <input type="text" id="nombre" [(ngModel)]="nombre" name="nombre" placeholder="Escribe tu nombre" required>
 
@@ -17,11 +25,13 @@
       <option value="reclamo">Reclamo</option>
     </select>
 
-    <label for="mensaje">Cuentanos...</label>
+    <label for="mensaje">Cuéntanos...</label>
     <textarea id="mensaje" [(ngModel)]="mensaje" name="mensaje" rows="5" placeholder="Escribe aquí tu mensaje..." required></textarea>
 
-    <button type="submit">Enviar</button>
+    <button type="submit" [disabled]="enviando">
+      {{ enviando ? 'Enviando...' : 'Enviar' }}
+    </button>
   </form>
 
-  <p id="respuestaPQR">{{ respuesta }}</p>
+  <p class="respuesta-error" *ngIf="respuesta && !exito">{{ respuesta }}</p>
 </section>

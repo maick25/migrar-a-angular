@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cuerpo-y-alma-api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend/db_api_falsa.json:/app/db_api_falsa.json
+    restart: unless-stopped

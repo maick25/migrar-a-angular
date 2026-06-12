@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { Api, Usuario, Consejo, Cita, Habito } from '../../services/api';
+import { Api, Usuario, Consejo, Cita, Habito, Pqr } from '../../services/api';
 import { Auth } from '../../services/auth';
 
 @Component({
@@ -13,7 +13,7 @@ import { Auth } from '../../services/auth';
   styleUrl: './dashboard.css'
 })
 export class Dashboard implements OnInit {
-  seccionActiva = 'usuarios';
+  seccionActiva = 'stats';
   usuarioActual: Usuario | null = null;
   esAdmin = false;
 
@@ -32,8 +32,9 @@ export class Dashboard implements OnInit {
   // Admin - Citas
   todasCitas: Cita[] = [];
 
-  // Admin - Stats
-  stats = { totalUsuarios: 0, totalConsejos: 0, totalCitas: 0, citasPendientes: 0 };
+  // Admin - PQRs
+  todasPqrs: Pqr[] = [];
+  stats = { totalUsuarios: 0, totalConsejos: 0, totalCitas: 0, citasPendientes: 0, totalPqrs: 0, pqrsPendientes: 0 };
 
   // Usuario - Citas
   misCitas: Cita[] = [];
@@ -87,14 +88,12 @@ export class Dashboard implements OnInit {
   }
 
   cargarTodo() {
-    this.cargarUsuarios(); this.cargarConsejos(); this.cargarTodasCitas();
+    this.cargarUsuarios(); this.cargarConsejos(); this.cargarTodasCitas(); this.cargarTodasPqrs();
   }
 
   // ── USUARIOS ──
   cargarUsuarios() {
-    this.api.getUsuarios().subscribe(d => {
-      this.usuarios = d; this.stats.totalUsuarios = d.length;
-    });
+    this.api.getUsuarios().subscribe(d => { this.usuarios = d; this.stats.totalUsuarios = d.length; });
   }
   guardarUsuario() {
     if (!this.usuarioForm.nombre || !this.usuarioForm.correo || !this.usuarioForm.password) {
@@ -160,6 +159,25 @@ export class Dashboard implements OnInit {
   eliminarCita(id: string) {
     if (confirm('¿Eliminar esta cita?')) {
       this.api.eliminarCita(id).subscribe(() => { this.mostrarMensaje('🗑️ Cita eliminada.'); this.cargarTodasCitas(); });
+    }
+  }
+
+  // ── PQRS ADMIN ──
+  cargarTodasPqrs() {
+    this.api.getPqrs().subscribe(d => {
+      this.todasPqrs = d;
+      this.stats.totalPqrs = d.length;
+      this.stats.pqrsPendientes = d.filter(p => p.estado === 'pendiente').length;
+    });
+  }
+  cambiarEstadoPqr(pqr: Pqr, estado: string) {
+    this.api.actualizarPqr(pqr.id!, {...pqr, estado}).subscribe(() => {
+      this.mostrarMensaje('✅ Estado de PQR actualizado.'); this.cargarTodasPqrs();
+    });
+  }
+  eliminarPqr(id: string) {
+    if (confirm('¿Eliminar esta PQR?')) {
+      this.api.eliminarPqr(id).subscribe(() => { this.mostrarMensaje('🗑️ PQR eliminada.'); this.cargarTodasPqrs(); });
     }
   }
 
